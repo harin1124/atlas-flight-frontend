@@ -1,0 +1,10 @@
+.header-util-layout {
+  ul.MuiList-root {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+  ul.MuiList-root li {
+    width: auto;
+  }
+}
