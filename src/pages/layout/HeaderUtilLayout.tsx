@@ -1,4 +1,4 @@
-import './style/headerUtilLayout.scss';
+import '@/pages/layout/style/headerUtilLayout.scss';
 import { Button, Container, ListItem } from '@mui/material';
 import List from '@mui/material/List';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';

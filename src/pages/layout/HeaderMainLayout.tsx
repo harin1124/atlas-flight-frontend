@@ -1,4 +1,4 @@
-import './style/headerMainLayout.scss';
+import '@/pages/layout/style/headerMainLayout.scss';
 import { Container } from '@mui/material';
 
 /**
