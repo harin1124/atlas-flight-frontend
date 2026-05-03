@@ -1,6 +1,113 @@
 .header-main-layout {
-  h1 {
-    font-size: 2rem;
-    font-weight: 900;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  width: 100%;
+  background: var(--header-main-bg);
+  border-bottom: 1px solid var(--header-main-border);
+  box-shadow: 0 8px 20px rgb(7 24 39 / 6%);
+  padding-inline: 0 !important;
+
+  .header-main-layout__inner {
+    max-width: 1600px;
+    min-height: 80px;
+    margin: 0 auto;
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .header-main-layout__brand {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .header-main-layout__logo {
+    height: 55px;
+    width: auto;
+    display: block;
+  }
+
+  .header-main-layout__nav {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .header-main-layout__nav-item.MuiButton-root {
+    height: 80px;
+    min-width: auto;
+    padding: 0 18px;
+    border-radius: 0;
+    color: var(--header-main-text);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+
+    .MuiButton-endIcon {
+      margin-left: 4px;
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+      color: var(--header-main-muted);
+    }
+
+    &:hover {
+      background: var(--header-main-brand-soft);
+      color: var(--header-main-brand);
+    }
+  }
+
+  .header-main-layout__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .header-main-layout__search.MuiIconButton-root,
+  .header-main-layout__menu.MuiIconButton-root {
+    width: 42px;
+    height: 42px;
+    color: var(--header-main-brand);
+    border: 1px solid var(--header-main-border);
+    background: var(--header-main-bg);
+
+    &:hover {
+      background: var(--header-main-brand-soft);
+    }
+  }
+
+  .header-main-layout__booking.MuiButton-root {
+    min-width: 128px;
+    height: 44px;
+    padding: 0 24px;
+    border-radius: 999px;
+    background: var(--header-main-brand);
+    box-shadow: none;
+    color: var(--header-main-inverse);
+    font-size: 0.9375rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: none;
+
+    &:hover {
+      background: var(--header-main-brand);
+      box-shadow: none;
+    }
+  }
+
+  .header-main-layout__menu {
+    display: none;
   }
 }

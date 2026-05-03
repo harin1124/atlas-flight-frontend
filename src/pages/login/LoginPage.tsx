@@ -22,20 +22,14 @@ import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 import { getApiErrorMessage } from '@/api/core/client';
 import { login } from '@/api/services/auth/authApis';
 import type { LoginType } from '@/api/services/auth/types';
-
-const palette = {
-  pageBg: '#D6EAF8',
-  navy: '#00255C',
-  sky: '#72BBEF',
-  inputBg: '#E8F0FE',
-} as const;
+import { atlasColors } from '@/theme/colors';
 
 const socialPlaceholders = [
-  { label: 'Naver', bg: '#03C75A', fg: '#fff', char: 'N' },
-  { label: 'Kakao', bg: '#FEE500', fg: '#000', char: 'T' },
-  { label: 'Google', bg: '#fff', fg: '#4285F4', char: 'G' },
-  { label: 'Facebook', bg: '#1877F2', fg: '#fff', char: 'f' },
-  { label: 'Apple', bg: '#000', fg: '#fff', char: '' },
+  { label: 'Naver', bg: atlasColors.social.naver, fg: '#fff', char: 'N' },
+  { label: 'Kakao', bg: atlasColors.social.kakao, fg: '#000', char: 'T' },
+  { label: 'Google', bg: atlasColors.background.elevated, fg: atlasColors.social.google, char: 'G' },
+  { label: 'Facebook', bg: atlasColors.social.facebook, fg: '#fff', char: 'f' },
+  { label: 'Apple', bg: atlasColors.social.apple, fg: '#fff', char: '' },
 ] as const;
 
 const LoginPage = () => {
@@ -91,16 +85,16 @@ const LoginPage = () => {
 
   const inputSx = {
     '& .MuiFilledInput-root': {
-      backgroundColor: palette.inputBg,
+      backgroundColor: atlasColors.background.brandSubtle,
       borderRadius: 0,
-      '&:hover': { backgroundColor: palette.inputBg },
-      '&.Mui-focused': { backgroundColor: palette.inputBg },
+      '&:hover': { backgroundColor: atlasColors.background.brandSubtle },
+      '&.Mui-focused': { backgroundColor: atlasColors.background.brandSubtle },
     },
     '& .MuiFilledInput-underline:before': {
-      borderBottomColor: 'rgba(0, 37, 92, 0.42)',
+      borderBottomColor: atlasColors.border.brand,
     },
     '& .MuiFilledInput-underline:after': {
-      borderBottomColor: palette.navy,
+      borderBottomColor: atlasColors.border.focus,
     },
   } as const;
 
@@ -109,7 +103,7 @@ const LoginPage = () => {
       sx={{
         minHeight: '100vh',
         boxSizing: 'border-box',
-        bgcolor: palette.pageBg,
+        bgcolor: atlasColors.background.brandSubtle,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -153,7 +147,7 @@ const LoginPage = () => {
               component="h1"
               sx={{
                 fontWeight: 700,
-                color: palette.navy,
+                color: atlasColors.brand.navy,
                 lineHeight: 1.35,
               }}
             >
@@ -170,13 +164,13 @@ const LoginPage = () => {
                   borderRadius: 999,
                   px: 4,
                   py: 1,
-                  borderColor: palette.navy,
-                  color: palette.navy,
+                  borderColor: atlasColors.brand.navy,
+                  color: atlasColors.brand.navy,
                   textTransform: 'none',
                   fontWeight: 600,
                   '&:hover': {
-                    borderColor: palette.navy,
-                    bgcolor: 'rgba(0, 37, 92, 0.04)',
+                    borderColor: atlasColors.brand.navy,
+                    bgcolor: atlasColors.action.secondary,
                   },
                 }}
               >
@@ -225,14 +219,14 @@ const LoginPage = () => {
                 minHeight: 44,
                 '& .MuiTabs-indicator': {
                   height: 3,
-                  bgcolor: palette.navy,
+                  bgcolor: atlasColors.brand.navy,
                 },
                 '& .MuiTab-root': {
                   textTransform: 'none',
                   fontWeight: 600,
                   fontSize: '1rem',
                   color: 'text.secondary',
-                  '&.Mui-selected': { color: palette.navy },
+                  '&.Mui-selected': { color: atlasColors.brand.navy },
                 },
               }}
             >
@@ -274,8 +268,8 @@ const LoginPage = () => {
                     checked={rememberId}
                     onChange={(e) => setRememberId(e.target.checked)}
                     sx={{
-                      color: palette.navy,
-                      '&.Mui-checked': { color: palette.navy },
+                      color: atlasColors.brand.navy,
+                      '&.Mui-checked': { color: atlasColors.brand.navy },
                     }}
                   />
                 }
@@ -295,13 +289,16 @@ const LoginPage = () => {
                   textTransform: 'none',
                   fontWeight: 700,
                   fontSize: '1rem',
-                  bgcolor: palette.sky,
-                  color: palette.navy,
+                  bgcolor: atlasColors.brand.sky,
+                  color: atlasColors.text.strong,
                   borderRadius: 1,
-                  '&:hover': { bgcolor: '#5eb5ea' },
+                  '&:hover': {
+                    bgcolor: atlasColors.action.primaryHover,
+                    color: atlasColors.action.primaryText,
+                  },
                 }}
               >
-                {isSubmitting ? <CircularProgress size={22} sx={{ color: palette.navy }} /> : '로그인'}
+                {isSubmitting ? <CircularProgress size={22} sx={{ color: atlasColors.brand.navy }} /> : '로그인'}
               </Button>
             </Stack>
 

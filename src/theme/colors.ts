@@ -1,0 +1,52 @@
+export const atlasColors = {
+  brand: {
+    navy: '#06346F',
+    blue: '#0A9CFF',
+    sky: '#6EC8FF',
+    ice: '#EAF7FF',
+  },
+  background: {
+    default: '#FFFFFF',
+    subtle: '#F7FAFC',
+    elevated: '#FFFFFF',
+    brand: '#06346F',
+    brandSubtle: '#EAF7FF',
+  },
+  text: {
+    default: '#1C2F42',
+    strong: '#071827',
+    muted: '#50657B',
+    subtle: '#8FA3B8',
+    inverse: '#FFFFFF',
+    brand: '#06346F',
+    link: '#087DD1',
+  },
+  border: {
+    default: '#DCE6F0',
+    subtle: '#EEF3F8',
+    focus: '#0A9CFF',
+    brand: '#06346F',
+  },
+  action: {
+    primary: '#0A9CFF',
+    primaryHover: '#087DD1',
+    primaryPressed: '#0668AE',
+    primaryText: '#FFFFFF',
+    secondary: '#EAF7FF',
+    secondaryHover: '#D7F0FF',
+    secondaryText: '#06346F',
+  },
+  semantic: {
+    success: '#16A676',
+    warning: '#F5A524',
+    error: '#E5484D',
+    info: '#0A9CFF',
+  },
+  social: {
+    naver: '#03C75A',
+    kakao: '#FEE500',
+    google: '#4285F4',
+    facebook: '#1877F2',
+    apple: '#000000',
+  },
+} as const;

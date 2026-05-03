@@ -1,8 +1,19 @@
 import '@/pages/layout/style/headerUtilLayout.scss';
-import { Button, Container, ListItem } from '@mui/material';
+import type { CSSProperties } from 'react';
+import { Button, Container, IconButton, ListItem } from '@mui/material';
 import List from '@mui/material/List';
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import SearchIcon from '@mui/icons-material/Search';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import { atlasColors } from '@/theme/colors';
+import { useNavigate } from 'react-router-dom';
+
+const utilStyle = {
+  '--header-util-bg': atlasColors.background.subtle,
+  '--header-util-border': atlasColors.border.subtle,
+  '--header-util-text': atlasColors.text.muted,
+  '--header-util-text-strong': atlasColors.text.strong,
+} as CSSProperties;
 
 /**
  * 헤더 유틸 레이아웃
@@ -14,20 +25,40 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
  *
  */
 const HeaderUtilLayout = () => {
+  const navigate = useNavigate();
+
   return (
-    <Container className={'header-util-layout'} maxWidth={false}>
-      <List>
-        <ListItem>
-          <Button variant={'text'} color={'inherit'} startIcon={<CardGiftcardIcon />}>
-            <span>이벤트</span>
-          </Button>
-        </ListItem>
-        <ListItem>
-          <Button variant={'text'} color={'inherit'} startIcon={<PersonAddAltIcon />}>
-            회원가입
-          </Button>
-        </ListItem>
-      </List>
+    <Container
+      className={'header-util-layout'}
+      maxWidth={false}
+      component="header"
+      style={utilStyle}
+    >
+      <div className="header-util-layout__inner">
+        <List aria-label="유틸리티 메뉴">
+          <ListItem>
+            <Button variant="text" color="inherit" startIcon={<HelpOutlineIcon />}>
+              고객지원
+            </Button>
+          </ListItem>
+          <ListItem className="header-util-layout__icon">
+            <IconButton aria-label="검색" size="small">
+              <SearchIcon fontSize="small" />
+            </IconButton>
+          </ListItem>
+          <ListItem>
+            <Button
+              className="header-util-layout__login"
+              variant="text"
+              color="inherit"
+              startIcon={<PersonOutlineIcon />}
+              onClick={() => navigate('/login')}
+            >
+              로그인
+            </Button>
+          </ListItem>
+        </List>
+      </div>
     </Container>
   );
 };

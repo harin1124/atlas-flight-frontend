@@ -1,5 +1,6 @@
 export const API_MODULE_PATHS = {
-  auth: '/auth',
+  auth: '/auth/api',
+  customer: '/customer/api',
   member: '/member',
   booking: '/booking',
   flight: '/flight',

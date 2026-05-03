@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="Atlas Flight">
+  <rect width="256" height="256" rx="56" ry="56" fill="#06346F"/>
+  <g transform="translate(128 128) rotate(-22)">
+    <path d="M -88 -44 L 88 0 L -26 0 Z" fill="#FFFFFF"/>
+    <path d="M -26 0 L 88 0 L -70 44 Z" fill="#0A9CFF"/>
+  </g>
+</svg>

@@ -1,10 +1,74 @@
 .header-util-layout {
+  width: 100%;
+  background: var(--header-util-bg);
+  border-bottom: 1px solid var(--header-util-border);
+  color: var(--header-util-text);
+  padding-inline: 0 !important;
+
+  .header-util-layout__inner {
+    max-width: 1600px;
+    min-height: 40px;
+    margin: 0 auto;
+    padding: 0 48px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
   ul.MuiList-root {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    align-items: center;
+    gap: 2px;
+    padding: 0;
   }
+
   ul.MuiList-root li {
     width: auto;
+    padding: 0;
+  }
+
+  .MuiButton-root {
+    min-width: auto;
+    min-height: 38px;
+    padding: 0 10px;
+    border-radius: 0;
+    color: inherit;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+
+    .MuiButton-startIcon {
+      margin-right: 5px;
+    }
+
+    svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    &:hover {
+      background: transparent;
+      color: var(--header-util-text-strong);
+    }
+  }
+
+  .MuiIconButton-root {
+    width: 32px;
+    height: 32px;
+    color: inherit;
+
+    &:hover {
+      background: transparent;
+      color: var(--header-util-text-strong);
+    }
+  }
+
+  .header-util-layout__login {
+    color: var(--header-util-text-strong);
+    font-weight: 700;
   }
 }
