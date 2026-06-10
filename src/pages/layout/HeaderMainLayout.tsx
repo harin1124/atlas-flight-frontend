@@ -38,6 +38,7 @@ const HeaderMainLayout = () => {
             className="header-main-layout__logo"
             src="/logo/atlas-flight-combined.svg"
             alt="Atlas Flight"
+            draggable={false}
           />
         </a>
 

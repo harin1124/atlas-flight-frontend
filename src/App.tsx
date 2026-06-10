@@ -13,9 +13,9 @@ const App = () => {
       <CssBaseline />
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
           <Route element={<DefaultLayout />}>
             <Route path={'/'} element={<Home />} />
+            <Route path="/login" element={<LoginPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
