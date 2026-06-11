@@ -5,12 +5,14 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import DefaultLayout from '@/pages/layout/DefaultLayout.tsx';
 import Home from '@/pages/Home.tsx';
 import LoginPage from '@/pages/login/LoginPage.tsx';
+import GlobalToast from '@/components/GlobalToast.tsx';
 import { appTheme } from '@/theme/theme';
 
 const App = () => {
   return (
     <ThemeProvider theme={appTheme}>
       <CssBaseline />
+      <GlobalToast />
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout />}>

@@ -12,9 +12,11 @@ import {
   Typography,
 } from '@mui/material';
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
+import { useNavigate } from 'react-router-dom';
 import { getApiErrorMessage } from '@/api/core/client';
 import { login } from '@/api/services/auth/authApis';
 import { useAuthStore } from '@/stores/authStore';
+import { useToastStore } from '@/stores/toastStore';
 import { atlasColors } from '@/theme/colors';
 
 const LoginPage = () => {
@@ -23,8 +25,9 @@ const LoginPage = () => {
   const [rememberId, setRememberId] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const setAuth = useAuthStore((state) => state.setAuth);
+  const showToast = useToastStore((state) => state.showToast);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedId = localStorage.getItem('savedLoginId');
@@ -39,7 +42,6 @@ const LoginPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
-    setSuccessMessage('');
     setIsSubmitting(true);
 
     try {
@@ -57,7 +59,9 @@ const LoginPage = () => {
         localStorage.removeItem('savedLoginId');
       }
 
-      setSuccessMessage(`${loginResult.userName}님, 환영합니다.`);
+      // 성공 토스트 후 메인으로 이동 (replace: 뒤로가기로 로그인 화면에 안 돌아오게)
+      showToast('로그인에 성공하였습니다.');
+      navigate('/', { replace: true });
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error, '로그인에 실패했습니다. 입력 정보를 확인해 주세요.'));
     } finally {
@@ -124,7 +128,6 @@ const LoginPage = () => {
         <Box component="form" onSubmit={handleSubmit}>
           <Stack spacing={2.5}>
             {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-            {successMessage && <Alert severity="success">{successMessage}</Alert>}
 
             <TextField
               required
