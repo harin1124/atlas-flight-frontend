@@ -7,6 +7,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { atlasColors } from '@/theme/colors';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '@/api/services/auth/authApis';
+import { useAuthStore } from '@/stores/authStore';
+import { useToastStore } from '@/stores/toastStore';
 
 const utilStyle = {
   '--header-util-bg': atlasColors.background.subtle,
@@ -26,6 +29,21 @@ const utilStyle = {
  */
 const HeaderUtilLayout = () => {
   const navigate = useNavigate();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+  const showToast = useToastStore((state) => state.showToast);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch {
+      // 서버 로그아웃이 실패해도 아래 finally에서 클라이언트 상태를 비운다
+    } finally {
+      clearAuth();
+      showToast('로그아웃되었습니다.');
+      navigate('/');
+    }
+  };
 
   return (
     <Container
@@ -52,9 +70,9 @@ const HeaderUtilLayout = () => {
               variant="text"
               color="inherit"
               startIcon={<PersonOutlineIcon />}
-              onClick={() => navigate('/login')}
+              onClick={isAuthenticated ? handleLogout : () => navigate('/login')}
             >
-              로그인
+              {isAuthenticated ? '로그아웃' : '로그인'}
             </Button>
           </ListItem>
         </List>

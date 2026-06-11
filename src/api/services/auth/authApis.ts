@@ -6,3 +6,8 @@ export const login = async (payload: LoginRequest) => {
   const { data } = await authApiClient.post<ApiResponse<LoginResponse>>('/auth/login', payload);
   return unwrapApiResponse(data);
 };
+
+export const logout = async () => {
+  const { data } = await authApiClient.post<ApiResponse<null>>('/auth/logout');
+  unwrapApiResponse(data);
+};
