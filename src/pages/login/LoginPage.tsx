@@ -3,10 +3,8 @@ import {
   Alert,
   Box,
   Button,
-  Checkbox,
   CircularProgress,
   Divider,
-  FormControlLabel,
   Link,
   Paper,
   Stack,
@@ -16,7 +14,6 @@ import {
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 import { getApiErrorMessage } from '@/api/core/client';
 import { login } from '@/api/services/auth/authApis';
-import type { LoginType } from '@/api/services/auth/types';
 import { atlasColors } from '@/theme/colors';
 
 const LoginPage = () => {
@@ -44,12 +41,9 @@ const LoginPage = () => {
     setIsSubmitting(true);
 
     try {
-      const loginType: LoginType = 'ID';
-      await login({
-        loginType,
-        identifier: id.trim(),
+      const { userName } = await login({
+        customerId: id.trim(),
         password,
-        rememberId,
       });
 
       if (rememberId) {
@@ -58,7 +52,7 @@ const LoginPage = () => {
         localStorage.removeItem('savedLoginId');
       }
 
-      setSuccessMessage('로그인 요청이 완료되었습니다.');
+      setSuccessMessage(`${userName}님, 환영합니다.`);
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error, '로그인에 실패했습니다. 입력 정보를 확인해 주세요.'));
     } finally {
@@ -151,6 +145,8 @@ const LoginPage = () => {
               sx={inputSx}
             />
 
+            {/* 아이디 저장: 아직 미구현 상태이므로 UI 숨김 처리
+                (구현 시 아래 주석 해제 + Checkbox, FormControlLabel import 복원)
             <FormControlLabel
               control={
                 <Checkbox
@@ -163,7 +159,7 @@ const LoginPage = () => {
                 />
               }
               label="아이디 저장"
-            />
+            /> */}
 
             <Button
               type="submit"

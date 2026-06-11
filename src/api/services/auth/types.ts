@@ -1,14 +1,10 @@
-export type LoginType = 'ID' | 'SKYPASS';
-
 export interface LoginRequest {
-  loginType: LoginType;
-  identifier: string;
+  customerId: string;
   password: string;
-  rememberId: boolean;
 }
 
 export interface LoginResponse {
-  accessToken?: string;
-  refreshToken?: string;
-  userId: string;
+  customerId: string;
+  userName: string;
+  accessToken: string;
 }
