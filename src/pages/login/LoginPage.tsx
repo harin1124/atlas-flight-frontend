@@ -14,6 +14,7 @@ import {
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
 import { getApiErrorMessage } from '@/api/core/client';
 import { login } from '@/api/services/auth/authApis';
+import { useAuthStore } from '@/stores/authStore';
 import { atlasColors } from '@/theme/colors';
 
 const LoginPage = () => {
@@ -23,6 +24,7 @@ const LoginPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const setAuth = useAuthStore((state) => state.setAuth);
 
   useEffect(() => {
     const savedId = localStorage.getItem('savedLoginId');
@@ -41,10 +43,13 @@ const LoginPage = () => {
     setIsSubmitting(true);
 
     try {
-      const { userName } = await login({
+      const loginResult = await login({
         customerId: id.trim(),
         password,
       });
+
+      // 로그인 성공 → 기본 사용자 정보를 전역 스토어에 보관
+      setAuth(loginResult);
 
       if (rememberId) {
         localStorage.setItem('savedLoginId', id.trim());
@@ -52,7 +57,7 @@ const LoginPage = () => {
         localStorage.removeItem('savedLoginId');
       }
 
-      setSuccessMessage(`${userName}님, 환영합니다.`);
+      setSuccessMessage(`${loginResult.userName}님, 환영합니다.`);
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error, '로그인에 실패했습니다. 입력 정보를 확인해 주세요.'));
     } finally {
