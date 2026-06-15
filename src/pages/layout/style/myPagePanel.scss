@@ -1,0 +1,300 @@
+.mypage-panel.MuiPopover-paper {
+  width: 600px;
+  margin-top: 12px;
+  border: 1px solid var(--mypage-border);
+  border-radius: 20px;
+  background: var(--mypage-bg);
+  box-shadow: 0 24px 60px rgb(7 24 39 / 16%);
+  overflow: hidden;
+
+  // 히어로: 이름 + 멤버십 카드
+  .mypage-panel__hero {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 34px 32px 30px;
+    overflow: hidden;
+    background: linear-gradient(120deg, var(--mypage-brand) 0%, #0b4a96 46%, var(--mypage-accent) 100%);
+    color: var(--mypage-inverse);
+  }
+
+  // 히어로 배경에 깔리는 큰 종이비행기 워터마크
+  .mypage-panel__hero-mark {
+    position: absolute;
+    top: -40px;
+    left: 38%;
+    width: 320px;
+    height: 320px;
+    color: #fff;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .mypage-panel__hero-info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .mypage-panel__profile {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    color: var(--mypage-inverse);
+
+    &:hover .mypage-panel__name {
+      text-decoration: underline;
+    }
+  }
+
+  .mypage-panel__name {
+    font-size: 1.75rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .mypage-panel__greeting {
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.85;
+  }
+
+  .mypage-panel__profile-arrow {
+    align-self: center;
+    width: 24px;
+    height: 24px;
+    color: var(--mypage-inverse);
+    opacity: 0.9;
+  }
+
+  .mypage-panel__card {
+    position: relative;
+    width: 240px;
+    min-height: 140px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #0b4a96, #062a5c);
+    border: 1px solid rgb(255 255 255 / 16%);
+    color: var(--mypage-inverse);
+    box-shadow: 0 14px 30px rgb(3 18 41 / 40%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .mypage-panel__card-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mypage-panel__card-mark {
+    width: 26px;
+    height: 26px;
+    color: var(--mypage-sky);
+  }
+
+  .mypage-panel__card-brand {
+    font-size: 0.9375rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .mypage-panel__card-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .mypage-panel__card-no {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.78;
+  }
+
+  // 카드 그리드 — 회원 정보 / 예약을 같은 높이로 나란히 둔다
+  .mypage-panel__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 16px;
+    padding: 18px 24px 12px;
+  }
+
+  .mypage-panel__card-box {
+    border: 1px solid var(--mypage-border);
+    border-radius: 16px;
+    padding: 6px 18px;
+    background: var(--mypage-bg);
+
+    // 정보 카드: 예약 카드 높이에 맞춰 늘어나면 내용을 세로 가운데로
+    &--info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4px 18px;
+      background: var(--mypage-brand-soft);
+      border-color: transparent;
+    }
+  }
+
+  // 카드 내부 한 줄
+  .mypage-panel__row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+    color: var(--mypage-text);
+
+    & + .mypage-panel__row {
+      border-top: 1px solid var(--mypage-border-subtle);
+    }
+
+    &--static {
+      cursor: default;
+    }
+
+    &--link {
+      .mypage-panel__row-label {
+        font-weight: 600;
+        color: var(--mypage-text);
+      }
+    }
+
+    &:not(.mypage-panel__row--static):hover .mypage-panel__row-label {
+      color: var(--mypage-brand);
+    }
+  }
+
+  .mypage-panel__row-label {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--mypage-strong);
+  }
+
+  .mypage-panel__row-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--mypage-brand);
+
+    &--num {
+      font-size: 1.0625rem;
+      font-weight: 800;
+    }
+
+    &--mono {
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+      color: var(--mypage-strong);
+    }
+  }
+
+  .mypage-panel__row-arrow {
+    width: 18px;
+    height: 18px;
+    color: var(--mypage-subtle);
+  }
+
+  .mypage-panel__row-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--mypage-subtle);
+  }
+
+  // 예약 카드
+  .mypage-panel__reservation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 28px 18px;
+    cursor: pointer;
+    text-align: center;
+    color: var(--mypage-text);
+
+    &:hover .mypage-panel__reservation-title {
+      color: var(--mypage-brand);
+    }
+  }
+
+  .mypage-panel__reservation-icon {
+    width: 40px;
+    height: 40px;
+    color: var(--mypage-accent);
+  }
+
+  .mypage-panel__reservation-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 1.0625rem;
+    font-weight: 800;
+    color: var(--mypage-strong);
+  }
+
+  .mypage-panel__reservation-empty {
+    font-size: 0.875rem;
+    color: var(--mypage-muted);
+  }
+
+  // 하단 바로가기 바
+  .mypage-panel__quick {
+    padding: 0 24px 24px;
+  }
+
+  .mypage-panel__quick-link {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    border: 1px solid var(--mypage-border);
+    border-radius: 16px;
+    background: var(--mypage-bg);
+    cursor: pointer;
+    text-align: left;
+    color: var(--mypage-strong);
+
+    &:hover {
+      background: var(--mypage-brand-soft);
+      border-color: var(--mypage-brand-soft);
+
+      .mypage-panel__quick-label {
+        color: var(--mypage-brand);
+      }
+    }
+  }
+
+  .mypage-panel__quick-icon {
+    width: 22px;
+    height: 22px;
+    color: var(--mypage-brand);
+  }
+
+  .mypage-panel__quick-label {
+    flex: 1;
+    font-size: 0.9375rem;
+    font-weight: 700;
+  }
+}

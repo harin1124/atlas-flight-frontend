@@ -109,6 +109,30 @@
     }
   }
 
+  .header-main-layout__mypage.MuiButton-root {
+    min-width: 128px;
+    height: 44px;
+    padding: 0 22px;
+    border-radius: 999px;
+    border: 1px solid var(--header-main-brand);
+    background: var(--header-main-bg);
+    color: var(--header-main-brand);
+    font-size: 0.9375rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: none;
+
+    .MuiButton-startIcon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      background: var(--header-main-brand-soft);
+      border-color: var(--header-main-brand);
+    }
+  }
+
   .header-main-layout__menu {
     display: none;
   }
