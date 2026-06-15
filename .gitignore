@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Yarn(Berry) 전용 — npm 락파일이 다시 추적되지 않도록 무시
+package-lock.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
