@@ -1,16 +1,23 @@
 import { create } from 'zustand';
+import type { LoginResponse } from '@/api/services/auth/types';
 
-/** 스토어에 들고 다니는 기본 사용자 정보. */
+/** 스토어에 들고 다니는 기본 사용자 정보. (이름은 로그인 응답의 조각을 합친 표시용 값) */
 export interface AuthUser {
+  /** 회원 아이디 (로그인 ID) */
   customerId: string;
-  userName: string;
+  /** 회원 번호 (12자리 업무번호) */
+  customerNumber: string;
+  /** 한글명 — 성+이름을 합친 표시용 값 */
+  userKorName: string;
+  /** 영문명 — 이름+성을 합친 표시용 값 */
+  userEngName: string;
 }
 
 interface AuthState {
   user: AuthUser | null;
   isAuthenticated: boolean;
-  /** 로그인 성공 시 사용자 정보로 인증 상태를 채운다. (액세스 토큰은 담지 않는다) */
-  setAuth: (user: AuthUser) => void;
+  /** 로그인 성공 응답으로 인증 상태를 채운다. 표시용 이름은 여기서 합쳐 담는다. (액세스 토큰은 담지 않는다) */
+  setAuth: (res: LoginResponse) => void;
   /** 로그아웃 등으로 인증 상태를 비운다. */
   clearAuth: () => void;
 }
@@ -26,10 +33,15 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
-  setAuth: (user) =>
-    // 토큰 등 불필요한 필드가 끼지 않도록 사용자 식별 정보만 명시적으로 추려 담는다.
+  setAuth: (res) =>
+    // 백엔드는 이름 조각(성/이름)을 주고, 표시용 한글명·영문명은 여기서 합쳐 담는다.
     set({
-      user: { customerId: user.customerId, userName: user.userName },
+      user: {
+        customerId: res.customerId,
+        customerNumber: res.customerNumber,
+        userKorName: `${res.korLastName ?? ''}${res.korFirstName ?? ''}` || '회원',
+        userEngName: `${res.engFirstName ?? ''} ${res.engLastName ?? ''}`.trim(),
+      },
       isAuthenticated: true,
     }),
   clearAuth: () =>

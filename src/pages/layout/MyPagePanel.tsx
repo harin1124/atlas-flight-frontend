@@ -51,8 +51,8 @@ interface MyPagePanelProps {
  *
  * <p>
  * 헤더의 "마이 페이지" 버튼을 누르면 버튼 아래로 떠서, 회원 정보와 주요 메뉴를
- * 퀵 메뉴 형태로 보여주는 패널입니다. 회원 등급/마일리지 등 일부 항목은 전용 API가
- * 생기기 전까지 레이아웃을 채우는 표시용 값으로 둡니다 (이름·회원번호는 실제 인증 상태에서 가져옴).
+ * 퀵 메뉴 형태로 보여주는 패널입니다. 이름·회원번호·회원아이디는 실제 인증 상태(authStore)에서
+ * 가져오고, 예약 등 일부 항목은 전용 API가 생기기 전까지 레이아웃을 채우는 표시용입니다.
  * </p>
  */
 const MyPagePanel = ({ anchorEl, onClose }: MyPagePanelProps) => {
@@ -63,8 +63,8 @@ const MyPagePanel = ({ anchorEl, onClose }: MyPagePanelProps) => {
     onClose();
   };
 
-  // 회원번호는 customerId를 4자리씩 끊어 보기 좋게 노출한다.
-  const memberNo = (user?.customerId ?? '').replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+  // 회원 번호(customerNumber)를 4자리씩 끊어 보기 좋게 노출한다.
+  const memberNo = (user?.customerNumber ?? '').replace(/(\d{4})(?=\d)/g, '$1 ').trim();
 
   return (
     <Popover
@@ -81,10 +81,11 @@ const MyPagePanel = ({ anchorEl, onClose }: MyPagePanelProps) => {
 
         <div className="mypage-panel__hero-info">
           <button type="button" className="mypage-panel__profile" onClick={() => go()}>
-            <span className="mypage-panel__name">{user?.userName ?? '회원'}</span>
+            <span className="mypage-panel__name">{user?.userKorName ?? '회원'}</span>
             <span className="mypage-panel__greeting">님, 좋은 여행 되세요</span>
             <ChevronRightIcon className="mypage-panel__profile-arrow" />
           </button>
+          {user?.userEngName && <span className="mypage-panel__eng-name">{user.userEngName}</span>}
         </div>
 
         <div className="mypage-panel__card" aria-hidden>
@@ -101,18 +102,17 @@ const MyPagePanel = ({ anchorEl, onClose }: MyPagePanelProps) => {
       <div className="mypage-panel__grid">
         {/* 회원 정보 */}
         <div className="mypage-panel__card-box mypage-panel__card-box--info">
-          <button type="button" className="mypage-panel__row" onClick={() => go()}>
-            <span className="mypage-panel__row-label">회원 등급</span>
-            <span className="mypage-panel__row-value">
-              ATLAS 골드
-              <ChevronRightIcon className="mypage-panel__row-arrow" />
-            </span>
-          </button>
           <div className="mypage-panel__row mypage-panel__row--static">
             <span className="mypage-panel__row-label">회원 번호</span>
             <span className="mypage-panel__row-value mypage-panel__row-value--mono">
               {memberNo || '-'}
               <ContentCopyIcon className="mypage-panel__row-icon" />
+            </span>
+          </div>
+          <div className="mypage-panel__row mypage-panel__row--static">
+            <span className="mypage-panel__row-label">회원 아이디</span>
+            <span className="mypage-panel__row-value mypage-panel__row-value--mono">
+              {user?.customerId ?? '-'}
             </span>
           </div>
         </div>
