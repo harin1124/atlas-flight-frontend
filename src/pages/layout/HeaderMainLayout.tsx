@@ -1,12 +1,15 @@
 import '@/pages/layout/style/headerMainLayout.scss';
-import type { CSSProperties } from 'react';
+import { useState, type CSSProperties, type MouseEvent } from 'react';
 import { Button, Container, IconButton } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { atlasColors } from '@/theme/colors';
+import { useAuthStore } from '@/stores/authStore';
+import MyPagePanel from '@/pages/layout/MyPagePanel';
 
-const navigationItems = ['예약', '공항', '기내', '스카이패스', '서비스 안내'];
+const navigationItems = ['예약', '공항', '기내', 'ATLAS CLUB', '서비스 안내'];
 
 const mainStyle = {
   '--header-main-bg': atlasColors.background.elevated,
@@ -29,6 +32,14 @@ const mainStyle = {
  *
  */
 const HeaderMainLayout = () => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  // 마이 페이지 패널을 띄울 기준 버튼. null이면 닫힌 상태.
+  const [myPageAnchor, setMyPageAnchor] = useState<HTMLElement | null>(null);
+
+  const toggleMyPage = (event: MouseEvent<HTMLElement>) => {
+    setMyPageAnchor((prev) => (prev ? null : event.currentTarget));
+  };
+
   return (
     <Container className={'header-main-layout'} maxWidth={false} component="section" style={mainStyle}>
       <div className="header-main-layout__inner">
@@ -57,11 +68,25 @@ const HeaderMainLayout = () => {
           <Button className="header-main-layout__booking" variant="contained">
             항공권 예매
           </Button>
+          {isAuthenticated && (
+            <Button
+              className="header-main-layout__mypage"
+              variant="outlined"
+              startIcon={<PersonOutlineIcon />}
+              onClick={toggleMyPage}
+              aria-haspopup="dialog"
+              aria-expanded={Boolean(myPageAnchor)}
+            >
+              마이 페이지
+            </Button>
+          )}
           <IconButton className="header-main-layout__menu" aria-label="전체 메뉴">
             <MenuIcon />
           </IconButton>
         </div>
       </div>
+
+      <MyPagePanel anchorEl={myPageAnchor} onClose={() => setMyPageAnchor(null)} />
     </Container>
   );
 };

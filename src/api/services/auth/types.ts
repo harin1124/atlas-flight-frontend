@@ -5,6 +5,10 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   customerId: string;
-  userName: string;
+  customerNumber: string;
+  korFirstName: string;
+  korLastName: string;
+  engFirstName: string;
+  engLastName: string;
   accessToken: string;
 }
