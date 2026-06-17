@@ -6,6 +6,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import { atlasColors } from '@/theme/colors';
 import { useAuthStore } from '@/stores/authStore';
+import { useNavigate } from 'react-router-dom';
 
 const panelStyle = {
   '--mypage-bg': atlasColors.background.elevated,
@@ -56,11 +57,18 @@ interface MyPagePanelProps {
  * </p>
  */
 const MyPagePanel = ({ anchorEl, onClose }: MyPagePanelProps) => {
+  const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
 
   // 메뉴 항목 클릭. 페이지 이동은 추후 기능 연동 시 붙인다. 지금은 패널만 닫는다.
   const go = () => {
     onClose();
+  };
+
+  // 이름(프로필)을 누르면 패널을 닫고 회원정보 페이지로 이동한다.
+  const goToMemberInfo = () => {
+    onClose();
+    navigate('/mypage/member-info');
   };
 
   // 회원 번호(customerNumber)를 4자리씩 끊어 보기 좋게 노출한다.
@@ -80,7 +88,7 @@ const MyPagePanel = ({ anchorEl, onClose }: MyPagePanelProps) => {
         <AtlasMark className="mypage-panel__hero-mark" aria-hidden />
 
         <div className="mypage-panel__hero-info">
-          <button type="button" className="mypage-panel__profile" onClick={() => go()}>
+          <button type="button" className="mypage-panel__profile" onClick={goToMemberInfo}>
             <span className="mypage-panel__name">{user?.userKorName ?? '회원'}</span>
             <span className="mypage-panel__greeting">님, 좋은 여행 되세요</span>
             <ChevronRightIcon className="mypage-panel__profile-arrow" />
