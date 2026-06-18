@@ -68,7 +68,7 @@ const MyPagePanel = ({ anchorEl, onClose }: MyPagePanelProps) => {
   // 이름(프로필)을 누르면 패널을 닫고 회원정보 페이지로 이동한다.
   const goToMemberInfo = () => {
     onClose();
-    navigate('/mypage/member-info');
+    navigate('/my-page/member-info');
   };
 
   // 회원 번호(customerNumber)를 4자리씩 끊어 보기 좋게 노출한다.

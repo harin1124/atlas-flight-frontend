@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import VpnKeyOutlinedIcon from '@mui/icons-material/VpnKeyOutlined';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getApiErrorMessage } from '@/api/core/client';
 import { login } from '@/api/services/auth/authApis';
 import { useAuthStore } from '@/stores/authStore';
@@ -28,6 +28,9 @@ const LoginPage = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
   const showToast = useToastStore((state) => state.showToast);
   const navigate = useNavigate();
+  const location = useLocation();
+  // RequireAuth 가 보호 페이지에서 튕겨낼 때 실어 보낸 원래 목적지. 없으면 메인으로.
+  const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname ?? '/';
 
   useEffect(() => {
     const savedId = localStorage.getItem('savedLoginId');
@@ -59,9 +62,10 @@ const LoginPage = () => {
         localStorage.removeItem('savedLoginId');
       }
 
-      // 성공 토스트 후 메인으로 이동 (replace: 뒤로가기로 로그인 화면에 안 돌아오게)
+      // 성공 토스트 후 원래 가려던 페이지(없으면 메인)로 이동
+      // (replace: 뒤로가기로 로그인 화면에 안 돌아오게)
       showToast('로그인에 성공하였습니다.');
-      navigate('/', { replace: true });
+      navigate(from, { replace: true });
     } catch (error) {
       setErrorMessage(getApiErrorMessage(error, '로그인에 실패했습니다. 입력 정보를 확인해 주세요.'));
     } finally {
