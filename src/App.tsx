@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import DefaultLayout from '@/pages/layout/DefaultLayout.tsx';
 import Home from '@/pages/Home.tsx';
 import LoginPage from '@/pages/login/LoginPage.tsx';
-import MemberInfoPage from '@/pages/mypage/MemberInfoPage.tsx';
+import MemberInfoPage from '@/pages/my-page/MemberInfoPage.tsx';
 import GlobalToast from '@/components/GlobalToast.tsx';
 import { appTheme } from '@/theme/theme';
 

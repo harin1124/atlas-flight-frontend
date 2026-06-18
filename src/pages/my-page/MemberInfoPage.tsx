@@ -1,17 +1,17 @@
-import '@/pages/mypage/style/memberInfoPage.scss';
+import '@/pages/my-page/style/memberInfoPage.scss';
 import { useEffect, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { Container } from '@mui/material';
 import { Navigate } from 'react-router-dom';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import PublicOutlinedIcon from '@mui/icons-material/PublicOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
+import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import { atlasColors } from '@/theme/colors';
 import { useAuthStore } from '@/stores/authStore';
 import { useToastStore } from '@/stores/toastStore';
-import { getCustomer } from '@/api/services/customer/customerApis';
-import type { CustomerDetail } from '@/api/services/customer/types';
+import { getCustomer, getPassengers } from '@/api/services/customer/customerApis';
+import type { CustomerDetail, Passenger } from '@/api/services/customer/types';
 
 const pageStyle = {
   '--mi-bg': atlasColors.background.elevated,
@@ -34,14 +34,25 @@ const GENDER_LABEL: Record<string, string> = {
   F: '여자',
 };
 
+/** 탑승자 관계 코드 → 표시 라벨. (SELF=본인은 가족 목록에서 제외한다) */
+const RELATION_LABEL: Record<string, string> = {
+  SELF: '본인',
+  SPOUSE: '배우자',
+  CHILD: '자녀',
+  PARENT: '부모',
+  SIBL: '형제·자매',
+  ETC: '기타',
+};
+
 const PASSWORD_MASK = '•'.repeat(10);
 
-/** ISO 날짜/일시 문자열(yyyy-MM-dd...)을 "yyyy년 MM월 dd일" 형태로. 비어 있으면 빈 문자열. */
+/** ISO 날짜/일시 문자열(yyyy-MM-dd...)을 "yyyy년 M월 d일" 형태로. 월·일의 앞자리 0은 뗀다. 비어 있으면 빈 문자열. */
 const formatKoreanDate = (value?: string | null) => {
   if (!value) return '';
   const [year, month, day] = value.slice(0, 10).split('-');
   if (!year || !month || !day) return '';
-  return `${year}년 ${month}월 ${day}일`;
+  // 월·일이 한 자리면 앞의 0을 떼어 표시한다. (03월 → 3월, 05일 → 5일; 두 자리는 그대로)
+  return `${year}년 ${Number(month)}월 ${Number(day)}일`;
 };
 
 /** 회원번호를 4자리씩 끊어 보기 좋게. (예: 121829508263 → 1218 2950 8263) */
@@ -63,25 +74,27 @@ const MemberInfoPage = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const showToast = useToastStore((state) => state.showToast);
 
-  const [detail, setDetail] = useState<CustomerDetail | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadFailed, setLoadFailed] = useState(false);
-
   const customerId = user?.customerId;
 
+  const [detail, setDetail] = useState<CustomerDetail | null>(null);
+  // customerId가 있으면(상세를 조회할 것이면) 로딩으로 시작하고, 없으면 조회를 건너뛰므로 false.
+  const [isLoading, setIsLoading] = useState(Boolean(customerId));
+  const [loadFailed, setLoadFailed] = useState(false);
+
+  const [passengers, setPassengers] = useState<Passenger[]>([]);
+  const [passengersLoading, setPassengersLoading] = useState(Boolean(customerId));
+
   useEffect(() => {
-    if (!customerId) {
-      setIsLoading(false);
-      return;
-    }
+    // customerId가 없으면 조회를 건너뛴다. (로딩 초기값이 이미 false라 별도 setState 불필요)
+    if (!customerId) return;
 
     let alive = true;
-    setIsLoading(true);
-    setLoadFailed(false);
 
     getCustomer(customerId)
       .then((data) => {
-        if (alive) setDetail(data);
+        if (!alive) return;
+        setDetail(data);
+        setLoadFailed(false);
       })
       .catch(() => {
         // 401(세션 만료)은 client.ts 인터셉터가 처리한다. 그 외 실패는 기본 정보만 노출한다.
@@ -89,6 +102,30 @@ const MemberInfoPage = () => {
       })
       .finally(() => {
         if (alive) setIsLoading(false);
+      });
+
+    return () => {
+      alive = false;
+    };
+  }, [customerId]);
+
+  // 가족(탑승자) 목록 — 현재 로그인 사용자 기준(JWT). 본인(SELF) 행도 함께 내려온다.
+  useEffect(() => {
+    // customerId가 없으면 조회를 건너뛴다. (로딩 초기값이 이미 false라 별도 setState 불필요)
+    if (!customerId) return;
+
+    let alive = true;
+
+    getPassengers()
+      .then((data) => {
+        if (alive) setPassengers(data);
+      })
+      .catch(() => {
+        // 401(세션 만료)은 client.ts 인터셉터가 처리한다. 그 외 실패는 빈 목록으로 둔다.
+        if (alive) setPassengers([]);
+      })
+      .finally(() => {
+        if (alive) setPassengersLoading(false);
       });
 
     return () => {
@@ -116,6 +153,9 @@ const MemberInfoPage = () => {
   const detailValue = (value: string) => value || (isLoading ? '불러오는 중…' : '-');
   const gender = detail ? (GENDER_LABEL[detail.genderCd] ?? detail.genderCd) : '';
 
+  // 본인(SELF)을 뺀 등록 가족 목록.
+  const family = passengers.filter((member) => member.relationCd !== 'SELF');
+
   const basicRows = [
     { label: '생년월일', value: detailValue(formatKoreanDate(detail?.birthday)) },
     { label: '성별', value: detailValue(gender) },
@@ -125,11 +165,6 @@ const MemberInfoPage = () => {
   ];
 
   const shortcuts = [
-    {
-      icon: <PublicOutlinedIcon className="member-info__shortcut-icon" />,
-      title: '여행서류 정보',
-      desc: '여권, 영주권, KTN 정보를 등록하거나 변경할 수 있어요.',
-    },
     {
       icon: <HomeOutlinedIcon className="member-info__shortcut-icon" />,
       title: '주소 및 기타 정보',
@@ -174,7 +209,7 @@ const MemberInfoPage = () => {
         <div className="member-info__summary-card">
           <span className="member-info__field-label">회원번호</span>
           <span className="member-info__field-value member-info__field-value--mono">{memberNumber}</span>
-          {joinDate && <span className="member-info__field-sub">( {joinDate} 가입 )</span>}
+          {joinDate && <span className="member-info__field-sub">{joinDate} 가입</span>}
         </div>
 
         <div className="member-info__summary-card">
@@ -200,6 +235,45 @@ const MemberInfoPage = () => {
         </div>
       </section>
 
+      {/* 가족 관리 */}
+      <section className="member-info__panel">
+        <div className="member-info__panel-head">
+          <h2 className="member-info__panel-title">가족 관리</h2>
+          <button type="button" className="member-info__add" onClick={handleNotReady}>
+            <GroupAddOutlinedIcon className="member-info__add-icon" />
+            가족 추가
+          </button>
+        </div>
+
+        <div className="member-info__family">
+          {passengersLoading ? (
+            <p className="member-info__family-empty">불러오는 중…</p>
+          ) : family.length === 0 ? (
+            <p className="member-info__family-empty">
+              등록된 가족이 없습니다. 함께 여행할 가족을 추가해 보세요.
+            </p>
+          ) : (
+            family.map((member) => (
+              <div className="member-info__family-row" key={member.customerNumber}>
+                <span className="member-info__family-rel">
+                  {RELATION_LABEL[member.relationCd] ?? member.relationCd}
+                </span>
+                <div className="member-info__family-info">
+                  <span className="member-info__family-name">
+                    {member.korLastName}
+                    {member.korFirstName}
+                  </span>
+                  <span className="member-info__family-birth">{formatKoreanDate(member.birthday)}</span>
+                </div>
+                <button type="button" className="member-info__change" onClick={handleNotReady}>
+                  삭제
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+      </section>
+
       {/* 하단 바로가기 카드 */}
       <section className="member-info__shortcuts">
         {shortcuts.map((item) => (
@@ -218,10 +292,6 @@ const MemberInfoPage = () => {
           </button>
         ))}
       </section>
-
-      <button type="button" className="member-info__withdraw" onClick={handleNotReady}>
-        회원탈퇴
-      </button>
     </Container>
   );
 };
