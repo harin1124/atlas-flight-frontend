@@ -1,5 +1,5 @@
 import '@/pages/my-page/style/memberInfoPage.scss';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { CSSProperties } from 'react';
 import { Container } from '@mui/material';
 import { Navigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useToastStore } from '@/stores/toastStore';
 import { getCustomer, getPassengers } from '@/api/services/customer/customerApis';
 import type { CustomerDetail, Passenger } from '@/api/services/customer/types';
+import AddFamilyModal from '@/pages/my-page/AddFamilyModal';
 
 const pageStyle = {
   '--mi-bg': atlasColors.background.elevated,
@@ -83,6 +84,18 @@ const MemberInfoPage = () => {
 
   const [passengers, setPassengers] = useState<Passenger[]>([]);
   const [passengersLoading, setPassengersLoading] = useState(Boolean(customerId));
+  const [isAddOpen, setIsAddOpen] = useState(false);
+
+  // 가족(탑승자) 목록 갱신 — 등록 성공 후 이벤트 핸들러에서 호출한다.
+  // (최초 로드는 아래 useEffect가 담당한다.)
+  const reloadPassengers = useCallback(() => {
+    setPassengersLoading(true);
+    return getPassengers()
+      .then((data) => setPassengers(data))
+      // 401(세션 만료)은 client.ts 인터셉터가 처리한다. 그 외 실패는 빈 목록으로 둔다.
+      .catch(() => setPassengers([]))
+      .finally(() => setPassengersLoading(false));
+  }, []);
 
   useEffect(() => {
     // customerId가 없으면 조회를 건너뛴다. (로딩 초기값이 이미 false라 별도 setState 불필요)
@@ -140,6 +153,13 @@ const MemberInfoPage = () => {
 
   // 변경/바로가기 화면은 추후 연동 예정. 지금은 안내 토스트만 띄운다.
   const handleNotReady = () => showToast('준비 중인 기능입니다.');
+
+  // 가족 등록 성공 → 모달을 닫고 토스트를 띄운 뒤 목록을 갱신한다.
+  const handleFamilyRegistered = () => {
+    setIsAddOpen(false);
+    showToast('가족을 추가했습니다.');
+    void reloadPassengers();
+  };
 
   // 상세(API)가 있으면 성/이름을 정확히 분리해 보여주고, 없으면 스토어의 합쳐진 이름으로 대체한다.
   const engName = detail
@@ -239,7 +259,7 @@ const MemberInfoPage = () => {
       <section className="member-info__panel">
         <div className="member-info__panel-head">
           <h2 className="member-info__panel-title">가족 관리</h2>
-          <button type="button" className="member-info__add" onClick={handleNotReady}>
+          <button type="button" className="member-info__add" onClick={() => setIsAddOpen(true)}>
             <GroupAddOutlinedIcon className="member-info__add-icon" />
             가족 추가
           </button>
@@ -292,6 +312,12 @@ const MemberInfoPage = () => {
           </button>
         ))}
       </section>
+
+      <AddFamilyModal
+        open={isAddOpen}
+        onClose={() => setIsAddOpen(false)}
+        onRegistered={handleFamilyRegistered}
+      />
     </Container>
   );
 };
