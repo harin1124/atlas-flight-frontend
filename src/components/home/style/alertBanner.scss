@@ -1,0 +1,25 @@
+.alert-banner {
+  width: 100%;
+  background: var(--alert-banner-bg);
+  border-bottom: 1px solid var(--alert-banner-border);
+  padding-inline: 0 !important;
+
+  .alert-banner__inner {
+    max-width: 1600px;
+    min-height: 44px;
+    margin: 0 auto;
+    padding: 10px 48px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--alert-banner-text);
+    font-size: 0.875rem;
+    font-weight: 600;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+  }
+}

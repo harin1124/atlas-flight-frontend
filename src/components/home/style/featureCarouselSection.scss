@@ -1,0 +1,74 @@
+.feature-carousel-section {
+  width: 100%;
+  padding: 48px 48px 8px;
+
+  .feature-carousel-section__inner {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .feature-carousel-section__track {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-carousel-section__card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .feature-carousel-section__thumb {
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #06346f 0%, #0a9cff 55%, #6ec8ff 100%);
+    color: #fff;
+
+    svg {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .feature-carousel-section__title {
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #1c2f42;
+  }
+
+  .feature-carousel-section__subtitle {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #50657b;
+  }
+
+  .feature-carousel-section__next.MuiIconButton-root {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #dce6f0;
+    background: #fff;
+    color: #06346f;
+    flex-shrink: 0;
+
+    &:hover {
+      background: #eaf7ff;
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .feature-carousel-section {
+    .feature-carousel-section__track {
+      grid-template-columns: 1fr;
+    }
+  }
+}

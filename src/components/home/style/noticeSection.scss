@@ -1,0 +1,114 @@
+.notice-section {
+  width: 100%;
+  padding: 48px 48px;
+
+  .notice-section__inner {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 32px;
+  }
+
+  .notice-section__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .notice-section__heading {
+    margin: 0;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: #1c2f42;
+  }
+
+  .notice-section__more {
+    font-size: 0.875rem;
+    color: #50657b;
+  }
+
+  .notice-section__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid #1c2f42;
+  }
+
+  .notice-section__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 4px;
+    border-bottom: 1px solid #eef3f8;
+    cursor: pointer;
+
+    &:hover .notice-section__item-title {
+      color: #087dd1;
+    }
+  }
+
+  .notice-section__item-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #1c2f42;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .notice-section__item-date {
+    flex-shrink: 0;
+    font-size: 0.8125rem;
+    color: #8fa3b8;
+  }
+
+  .notice-section__app-card {
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 220px;
+    background: linear-gradient(135deg, #06346f 0%, #0a4d8f 100%);
+    color: #fff;
+  }
+
+  .notice-section__app-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+
+    svg {
+      width: 26px;
+      height: 26px;
+    }
+  }
+
+  .notice-section__app-title {
+    margin: 0 0 4px;
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .notice-section__app-subtitle {
+    margin: 0;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+@media (max-width: 900px) {
+  .notice-section {
+    .notice-section__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+}
