@@ -9,6 +9,7 @@ const buildApiUrl = (path: string) => {
 export { rootApiClient };
 
 export const authApiClient = createApiClient(buildApiUrl(API_MODULE_PATHS.auth));
+export const customerApiClient = createApiClient(buildApiUrl(API_MODULE_PATHS.customer));
 export const memberApiClient = createApiClient(buildApiUrl(API_MODULE_PATHS.member));
 export const bookingApiClient = createApiClient(buildApiUrl(API_MODULE_PATHS.booking));
 export const flightApiClient = createApiClient(buildApiUrl(API_MODULE_PATHS.flight));
